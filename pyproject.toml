@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=84.0.0", "wheel>=0.48.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "globdelta"
+version = "0.1.0"
+description = "Offline proof-or-witness comparison of strict root gitignore policies"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = []
+keywords = ["gitignore", "glob", "automata", "policy", "equivalence"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Version Control :: Git",
+]
+
+[project.urls]
+Repository = "https://github.com/loaff123/globdelta"
+Documentation = "https://github.com/loaff123/globdelta#readme"
+Issues = "https://github.com/loaff123/globdelta/issues"
+
+[project.scripts]
+globdelta = "globdelta.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["globdelta*"]
+namespaces = false

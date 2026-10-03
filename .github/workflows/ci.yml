@@ -1,0 +1,57 @@
+name: tests-and-offline-wheel
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12', '3.13', '3.14']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Provision the standard build backend
+        run: python -m pip install setuptools==84.0.0 wheel==0.48.0
+      - name: Require the independent Git oracle
+        run: |
+          command -v git
+          git --version
+      - name: Run the full mandatory source suite
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -v
+      - name: Verify complete source distribution
+        run: python tests/check_sdist.py "$RUNNER_TEMP/globdelta-sdist"
+      - name: Build the wheel offline with the provisioned backend
+        env:
+          PIP_NO_INDEX: '1'
+          PIP_DISABLE_PIP_VERSION_CHECK: '1'
+        run: python -m pip wheel --no-build-isolation --no-deps --no-index . --wheel-dir dist
+      - name: Install into a clean environment without an index
+        env:
+          PIP_NO_INDEX: '1'
+          PIP_DISABLE_PIP_VERSION_CHECK: '1'
+        run: |
+          python -m venv "$RUNNER_TEMP/globdelta-clean"
+          "$RUNNER_TEMP/globdelta-clean/bin/python" -m pip install --no-index --no-deps dist/globdelta-0.1.0-py3-none-any.whl
+      - name: Run mandatory tests against the installed wheel
+        run: '"$RUNNER_TEMP/globdelta-clean/bin/python" -m unittest discover -s tests -v'
+      - name: Smoke-test installed CLI workflows
+        run: |
+          "$RUNNER_TEMP/globdelta-clean/bin/globdelta" --version
+          "$RUNNER_TEMP/globdelta-clean/bin/globdelta" diff examples/cache/before.gitignore examples/cache/after.gitignore
+          "$RUNNER_TEMP/globdelta-clean/bin/globdelta" explain examples/ancestor/after.gitignore build/keep.txt --format text
+          "$RUNNER_TEMP/globdelta-clean/bin/python" examples/run_examples.py --globdelta "$RUNNER_TEMP/globdelta-clean/bin/globdelta"

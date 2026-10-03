@@ -1,0 +1,930 @@
+{
+  "tool_version": "0.1.0",
+  "verification_date_utc": "2026-10-03",
+  "execution": "Offline wheel installed in a fresh Python virtual environment; invoked the installed console entry point.",
+  "runs": [
+    {
+      "command": [
+        "globdelta",
+        "diff",
+        "examples/ancestor/before.gitignore",
+        "examples/ancestor/after.gitignore",
+        "--format",
+        "json"
+      ],
+      "exit_code": 1,
+      "report": {
+        "schema_version": 1,
+        "tool": {
+          "name": "GlobDelta",
+          "version": "0.1.0"
+        },
+        "profile": {
+          "id": "git-root-ascii-v1",
+          "semantics_revision": 1
+        },
+        "command": "diff",
+        "inputs": [
+          {
+            "role": "before",
+            "label": "examples/ancestor/before.gitignore",
+            "raw_bytes_read": 26,
+            "complete_read": true,
+            "sha256": "603cf5d5a3d2619850e20b65163668e0fdcba257b7f87fb4403fc3c1ef7ebc0e",
+            "rule_count": 2
+          },
+          {
+            "role": "after",
+            "label": "examples/ancestor/after.gitignore",
+            "raw_bytes_read": 25,
+            "complete_read": true,
+            "sha256": "302fada0205cc0ea6abdf043f57a8d2762eeccb3dc87c205569f22d01f4dedba",
+            "rule_count": 2
+          }
+        ],
+        "result": "different",
+        "assessment_complete": true,
+        "graph_exhausted": true,
+        "directions": {
+          "newly_ignored": {
+            "status": "found",
+            "witness": {
+              "path": "build/keep.txt",
+              "byte_length": 14,
+              "minimality": "shortest-shortlex",
+              "before": {
+                "ignored": false,
+                "basis": "direct_rule",
+                "winning_rule_id": 2,
+                "first_blocked_ancestor": null,
+                "rule_table": [
+                  {
+                    "rule_index": 1,
+                    "line": 1,
+                    "column_start": 1,
+                    "column_end_exclusive": 9,
+                    "byte_start": 0,
+                    "byte_end": 8,
+                    "source_text": "/build/*",
+                    "polarity": "ignore",
+                    "applicability": "file_and_directory"
+                  },
+                  {
+                    "rule_index": 2,
+                    "line": 2,
+                    "column_start": 1,
+                    "column_end_exclusive": 17,
+                    "byte_start": 9,
+                    "byte_end": 25,
+                    "source_text": "!/build/keep.txt",
+                    "polarity": "include",
+                    "applicability": "file_and_directory"
+                  }
+                ],
+                "steps": [
+                  {
+                    "prefix_end": 5,
+                    "node_type": "directory",
+                    "matching_rule_ids": [],
+                    "winning_rule_id": null,
+                    "ignored": false
+                  },
+                  {
+                    "prefix_end": 14,
+                    "node_type": "file",
+                    "matching_rule_ids": [
+                      1,
+                      2
+                    ],
+                    "winning_rule_id": 2,
+                    "ignored": false
+                  }
+                ],
+                "trace_complete": true,
+                "terminal_matches": {
+                  "effective": true,
+                  "matching_rule_ids": [
+                    1,
+                    2
+                  ]
+                }
+              },
+              "after": {
+                "ignored": true,
+                "basis": "blocked_ancestor",
+                "winning_rule_id": 1,
+                "first_blocked_ancestor": {
+                  "prefix_end": 5,
+                  "winning_rule_id": 1
+                },
+                "rule_table": [
+                  {
+                    "rule_index": 1,
+                    "line": 1,
+                    "column_start": 1,
+                    "column_end_exclusive": 8,
+                    "byte_start": 0,
+                    "byte_end": 7,
+                    "source_text": "/build/",
+                    "polarity": "ignore",
+                    "applicability": "directory"
+                  }
+                ],
+                "steps": [
+                  {
+                    "prefix_end": 5,
+                    "node_type": "directory",
+                    "matching_rule_ids": [
+                      1
+                    ],
+                    "winning_rule_id": 1,
+                    "ignored": true
+                  }
+                ],
+                "trace_complete": true,
+                "terminal_matches": {
+                  "effective": false,
+                  "matching_rule_ids": []
+                }
+              }
+            }
+          },
+          "newly_included": {
+            "status": "absent"
+          }
+        },
+        "limits": {
+          "input_bytes": 65536,
+          "line_bytes": 2048,
+          "rules": 256,
+          "ast_items": 4096,
+          "nfa_states": 8192,
+          "nfa_edges": 24576,
+          "subsets": 50000,
+          "product_states": 50000,
+          "transitions": 4750000,
+          "work": 20000000,
+          "reference_work": 20000000,
+          "replay_work": 20000000,
+          "replay_payload_bytes": 8388608,
+          "cache_entries": 8192,
+          "payload_bytes": 67108864,
+          "witness_bytes": 4096,
+          "explanation_steps": 4096,
+          "explanation_matches": 16384,
+          "diagnostics": 64,
+          "report_bytes": 1048576
+        },
+        "usage": {
+          "after.ast_items": 21,
+          "after.input_bytes": 25,
+          "after.nfa_edges": 21,
+          "after.nfa_states": 22,
+          "after.peak_cache_entries": 663,
+          "after.rules": 2,
+          "after.subsets": 7,
+          "before.ast_items": 23,
+          "before.input_bytes": 26,
+          "before.nfa_edges": 23,
+          "before.nfa_states": 23,
+          "before.peak_cache_entries": 1605,
+          "before.rules": 2,
+          "before.subsets": 17,
+          "peak_input_bytes": 26,
+          "peak_line_bytes": 16,
+          "peak_payload_bytes": 11702306,
+          "product_states": 54,
+          "transitions": 5130,
+          "work": 9262,
+          "replay.peak_payload_bytes": 1102,
+          "replay.peak_witness_bytes": 14,
+          "replay.replay_work": 407
+        },
+        "stop": {
+          "reason": "exhausted",
+          "limit": null
+        },
+        "diagnostics": {
+          "items": [],
+          "truncated": false
+        }
+      }
+    },
+    {
+      "command": [
+        "globdelta",
+        "explain",
+        "examples/ancestor/after.gitignore",
+        "build/keep.txt",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "report": {
+        "schema_version": 1,
+        "tool": {
+          "name": "GlobDelta",
+          "version": "0.1.0"
+        },
+        "profile": {
+          "id": "git-root-ascii-v1",
+          "semantics_revision": 1
+        },
+        "command": "explain",
+        "inputs": [
+          {
+            "role": "policy",
+            "label": "examples/ancestor/after.gitignore",
+            "raw_bytes_read": 25,
+            "complete_read": true,
+            "sha256": "302fada0205cc0ea6abdf043f57a8d2762eeccb3dc87c205569f22d01f4dedba",
+            "rule_count": 2
+          }
+        ],
+        "result": "explained",
+        "assessment_complete": true,
+        "graph_exhausted": null,
+        "query": {
+          "path": "build/keep.txt",
+          "byte_length": 14
+        },
+        "explanation": {
+          "ignored": true,
+          "basis": "blocked_ancestor",
+          "winning_rule_id": 1,
+          "first_blocked_ancestor": {
+            "prefix_end": 5,
+            "winning_rule_id": 1
+          },
+          "rule_table": [
+            {
+              "rule_index": 1,
+              "line": 1,
+              "column_start": 1,
+              "column_end_exclusive": 8,
+              "byte_start": 0,
+              "byte_end": 7,
+              "source_text": "/build/",
+              "polarity": "ignore",
+              "applicability": "directory"
+            }
+          ],
+          "steps": [
+            {
+              "prefix_end": 5,
+              "node_type": "directory",
+              "matching_rule_ids": [
+                1
+              ],
+              "winning_rule_id": 1,
+              "ignored": true
+            }
+          ],
+          "trace_complete": true,
+          "terminal_matches": {
+            "effective": false,
+            "matching_rule_ids": []
+          }
+        },
+        "limits": {
+          "input_bytes": 65536,
+          "line_bytes": 2048,
+          "rules": 256,
+          "ast_items": 4096,
+          "nfa_states": 8192,
+          "nfa_edges": 24576,
+          "subsets": 50000,
+          "product_states": 50000,
+          "transitions": 4750000,
+          "work": 20000000,
+          "reference_work": 20000000,
+          "replay_work": 20000000,
+          "replay_payload_bytes": 8388608,
+          "cache_entries": 8192,
+          "payload_bytes": 67108864,
+          "witness_bytes": 4096,
+          "explanation_steps": 4096,
+          "explanation_matches": 16384,
+          "diagnostics": 64,
+          "report_bytes": 1048576
+        },
+        "usage": {
+          "peak_input_bytes": 25,
+          "peak_line_bytes": 16,
+          "peak_payload_bytes": 3147878,
+          "peak_witness_bytes": 14,
+          "policy.ast_items": 21,
+          "policy.input_bytes": 25,
+          "policy.rules": 2,
+          "reference_work": 113,
+          "work": 50
+        },
+        "stop": {
+          "reason": "explained",
+          "limit": null
+        },
+        "diagnostics": {
+          "items": [],
+          "truncated": false
+        }
+      }
+    },
+    {
+      "command": [
+        "globdelta",
+        "diff",
+        "examples/order/before.gitignore",
+        "examples/order/after.gitignore",
+        "--format",
+        "json"
+      ],
+      "exit_code": 1,
+      "report": {
+        "schema_version": 1,
+        "tool": {
+          "name": "GlobDelta",
+          "version": "0.1.0"
+        },
+        "profile": {
+          "id": "git-root-ascii-v1",
+          "semantics_revision": 1
+        },
+        "command": "diff",
+        "inputs": [
+          {
+            "role": "before",
+            "label": "examples/order/before.gitignore",
+            "raw_bytes_read": 16,
+            "complete_read": true,
+            "sha256": "774eb485935cab2f24ae6ea29f09a7832124ff184596237ccc275fcd9f03756d",
+            "rule_count": 2
+          },
+          {
+            "role": "after",
+            "label": "examples/order/after.gitignore",
+            "raw_bytes_read": 16,
+            "complete_read": true,
+            "sha256": "267bbc061d9b1edf8058c084a5d1fb5db505ec47a28c30f4ff816c19d636cf8e",
+            "rule_count": 2
+          }
+        ],
+        "result": "different",
+        "assessment_complete": true,
+        "graph_exhausted": true,
+        "directions": {
+          "newly_ignored": {
+            "status": "found",
+            "witness": {
+              "path": "keep.log",
+              "byte_length": 8,
+              "minimality": "shortest-shortlex",
+              "before": {
+                "ignored": false,
+                "basis": "direct_rule",
+                "winning_rule_id": 2,
+                "first_blocked_ancestor": null,
+                "rule_table": [
+                  {
+                    "rule_index": 1,
+                    "line": 1,
+                    "column_start": 1,
+                    "column_end_exclusive": 6,
+                    "byte_start": 0,
+                    "byte_end": 5,
+                    "source_text": "*.log",
+                    "polarity": "ignore",
+                    "applicability": "file_and_directory"
+                  },
+                  {
+                    "rule_index": 2,
+                    "line": 2,
+                    "column_start": 1,
+                    "column_end_exclusive": 10,
+                    "byte_start": 6,
+                    "byte_end": 15,
+                    "source_text": "!keep.log",
+                    "polarity": "include",
+                    "applicability": "file_and_directory"
+                  }
+                ],
+                "steps": [
+                  {
+                    "prefix_end": 8,
+                    "node_type": "file",
+                    "matching_rule_ids": [
+                      1,
+                      2
+                    ],
+                    "winning_rule_id": 2,
+                    "ignored": false
+                  }
+                ],
+                "trace_complete": true,
+                "terminal_matches": {
+                  "effective": true,
+                  "matching_rule_ids": [
+                    1,
+                    2
+                  ]
+                }
+              },
+              "after": {
+                "ignored": true,
+                "basis": "direct_rule",
+                "winning_rule_id": 2,
+                "first_blocked_ancestor": null,
+                "rule_table": [
+                  {
+                    "rule_index": 1,
+                    "line": 1,
+                    "column_start": 1,
+                    "column_end_exclusive": 10,
+                    "byte_start": 0,
+                    "byte_end": 9,
+                    "source_text": "!keep.log",
+                    "polarity": "include",
+                    "applicability": "file_and_directory"
+                  },
+                  {
+                    "rule_index": 2,
+                    "line": 2,
+                    "column_start": 1,
+                    "column_end_exclusive": 6,
+                    "byte_start": 10,
+                    "byte_end": 15,
+                    "source_text": "*.log",
+                    "polarity": "ignore",
+                    "applicability": "file_and_directory"
+                  }
+                ],
+                "steps": [
+                  {
+                    "prefix_end": 8,
+                    "node_type": "file",
+                    "matching_rule_ids": [
+                      1,
+                      2
+                    ],
+                    "winning_rule_id": 2,
+                    "ignored": true
+                  }
+                ],
+                "trace_complete": true,
+                "terminal_matches": {
+                  "effective": true,
+                  "matching_rule_ids": [
+                    1,
+                    2
+                  ]
+                }
+              }
+            }
+          },
+          "newly_included": {
+            "status": "absent"
+          }
+        },
+        "limits": {
+          "input_bytes": 65536,
+          "line_bytes": 2048,
+          "rules": 256,
+          "ast_items": 4096,
+          "nfa_states": 8192,
+          "nfa_edges": 24576,
+          "subsets": 50000,
+          "product_states": 50000,
+          "transitions": 4750000,
+          "work": 20000000,
+          "reference_work": 20000000,
+          "replay_work": 20000000,
+          "replay_payload_bytes": 8388608,
+          "cache_entries": 8192,
+          "payload_bytes": 67108864,
+          "witness_bytes": 4096,
+          "explanation_steps": 4096,
+          "explanation_matches": 16384,
+          "diagnostics": 64,
+          "report_bytes": 1048576
+        },
+        "usage": {
+          "after.ast_items": 15,
+          "after.input_bytes": 16,
+          "after.nfa_edges": 21,
+          "after.nfa_states": 17,
+          "after.peak_cache_entries": 1421,
+          "after.rules": 2,
+          "after.subsets": 15,
+          "before.ast_items": 15,
+          "before.input_bytes": 16,
+          "before.nfa_edges": 21,
+          "before.nfa_states": 17,
+          "before.peak_cache_entries": 1422,
+          "before.rules": 2,
+          "before.subsets": 15,
+          "peak_input_bytes": 16,
+          "peak_line_bytes": 9,
+          "peak_payload_bytes": 11741094,
+          "product_states": 70,
+          "transitions": 6650,
+          "work": 41762,
+          "replay.peak_payload_bytes": 840,
+          "replay.peak_witness_bytes": 8,
+          "replay.replay_work": 300
+        },
+        "stop": {
+          "reason": "exhausted",
+          "limit": null
+        },
+        "diagnostics": {
+          "items": [],
+          "truncated": false
+        }
+      }
+    },
+    {
+      "command": [
+        "globdelta",
+        "diff",
+        "examples/cache/before.gitignore",
+        "examples/cache/after.gitignore",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "report": {
+        "schema_version": 1,
+        "tool": {
+          "name": "GlobDelta",
+          "version": "0.1.0"
+        },
+        "profile": {
+          "id": "git-root-ascii-v1",
+          "semantics_revision": 1
+        },
+        "command": "diff",
+        "inputs": [
+          {
+            "role": "before",
+            "label": "examples/cache/before.gitignore",
+            "raw_bytes_read": 6,
+            "complete_read": true,
+            "sha256": "30ae8992e30d51db6ae07a86d91703976f6e69880457a946a3c1e63ffeaaf83e",
+            "rule_count": 1
+          },
+          {
+            "role": "after",
+            "label": "examples/cache/after.gitignore",
+            "raw_bytes_read": 9,
+            "complete_read": true,
+            "sha256": "5eb260dc1ef473498755843cd8ff2a353eef615ec7afd3d71f870d26def3cc5a",
+            "rule_count": 1
+          }
+        ],
+        "result": "equivalent",
+        "assessment_complete": true,
+        "graph_exhausted": true,
+        "directions": {
+          "newly_ignored": {
+            "status": "absent"
+          },
+          "newly_included": {
+            "status": "absent"
+          }
+        },
+        "limits": {
+          "input_bytes": 65536,
+          "line_bytes": 2048,
+          "rules": 256,
+          "ast_items": 4096,
+          "nfa_states": 8192,
+          "nfa_edges": 24576,
+          "subsets": 50000,
+          "product_states": 50000,
+          "transitions": 4750000,
+          "work": 20000000,
+          "reference_work": 20000000,
+          "replay_work": 20000000,
+          "replay_payload_bytes": 8388608,
+          "cache_entries": 8192,
+          "payload_bytes": 67108864,
+          "witness_bytes": 4096,
+          "explanation_steps": 4096,
+          "explanation_matches": 16384,
+          "diagnostics": 64,
+          "report_bytes": 1048576
+        },
+        "usage": {
+          "after.ast_items": 7,
+          "after.input_bytes": 9,
+          "after.nfa_edges": 9,
+          "after.nfa_states": 8,
+          "after.peak_cache_entries": 757,
+          "after.rules": 1,
+          "after.subsets": 8,
+          "before.ast_items": 6,
+          "before.input_bytes": 6,
+          "before.nfa_edges": 9,
+          "before.nfa_states": 8,
+          "before.peak_cache_entries": 757,
+          "before.rules": 1,
+          "before.subsets": 8,
+          "peak_input_bytes": 9,
+          "peak_line_bytes": 8,
+          "peak_payload_bytes": 11644004,
+          "product_states": 37,
+          "transitions": 3515,
+          "work": 8030,
+          "replay.peak_payload_bytes": 0
+        },
+        "stop": {
+          "reason": "exhausted",
+          "limit": null
+        },
+        "diagnostics": {
+          "items": [],
+          "truncated": false
+        }
+      }
+    },
+    {
+      "command": [
+        "globdelta",
+        "diff",
+        "examples/cache/directories-only.gitignore",
+        "examples/cache/before.gitignore",
+        "--format",
+        "json"
+      ],
+      "exit_code": 1,
+      "report": {
+        "schema_version": 1,
+        "tool": {
+          "name": "GlobDelta",
+          "version": "0.1.0"
+        },
+        "profile": {
+          "id": "git-root-ascii-v1",
+          "semantics_revision": 1
+        },
+        "command": "diff",
+        "inputs": [
+          {
+            "role": "before",
+            "label": "examples/cache/directories-only.gitignore",
+            "raw_bytes_read": 7,
+            "complete_read": true,
+            "sha256": "695426e943174af72f2a2391c3f48ed02c52873628e79be9fbf1a117f9ab3d9d",
+            "rule_count": 1
+          },
+          {
+            "role": "after",
+            "label": "examples/cache/before.gitignore",
+            "raw_bytes_read": 6,
+            "complete_read": true,
+            "sha256": "30ae8992e30d51db6ae07a86d91703976f6e69880457a946a3c1e63ffeaaf83e",
+            "rule_count": 1
+          }
+        ],
+        "result": "different",
+        "assessment_complete": true,
+        "graph_exhausted": true,
+        "directions": {
+          "newly_ignored": {
+            "status": "found",
+            "witness": {
+              "path": "cache",
+              "byte_length": 5,
+              "minimality": "shortest-shortlex",
+              "before": {
+                "ignored": false,
+                "basis": "default",
+                "winning_rule_id": null,
+                "first_blocked_ancestor": null,
+                "rule_table": [],
+                "steps": [
+                  {
+                    "prefix_end": 5,
+                    "node_type": "file",
+                    "matching_rule_ids": [],
+                    "winning_rule_id": null,
+                    "ignored": false
+                  }
+                ],
+                "trace_complete": true,
+                "terminal_matches": {
+                  "effective": true,
+                  "matching_rule_ids": []
+                }
+              },
+              "after": {
+                "ignored": true,
+                "basis": "direct_rule",
+                "winning_rule_id": 1,
+                "first_blocked_ancestor": null,
+                "rule_table": [
+                  {
+                    "rule_index": 1,
+                    "line": 1,
+                    "column_start": 1,
+                    "column_end_exclusive": 6,
+                    "byte_start": 0,
+                    "byte_end": 5,
+                    "source_text": "cache",
+                    "polarity": "ignore",
+                    "applicability": "file_and_directory"
+                  }
+                ],
+                "steps": [
+                  {
+                    "prefix_end": 5,
+                    "node_type": "file",
+                    "matching_rule_ids": [
+                      1
+                    ],
+                    "winning_rule_id": 1,
+                    "ignored": true
+                  }
+                ],
+                "trace_complete": true,
+                "terminal_matches": {
+                  "effective": true,
+                  "matching_rule_ids": [
+                    1
+                  ]
+                }
+              }
+            }
+          },
+          "newly_included": {
+            "status": "absent"
+          }
+        },
+        "limits": {
+          "input_bytes": 65536,
+          "line_bytes": 2048,
+          "rules": 256,
+          "ast_items": 4096,
+          "nfa_states": 8192,
+          "nfa_edges": 24576,
+          "subsets": 50000,
+          "product_states": 50000,
+          "transitions": 4750000,
+          "work": 20000000,
+          "reference_work": 20000000,
+          "replay_work": 20000000,
+          "replay_payload_bytes": 8388608,
+          "cache_entries": 8192,
+          "payload_bytes": 67108864,
+          "witness_bytes": 4096,
+          "explanation_steps": 4096,
+          "explanation_matches": 16384,
+          "diagnostics": 64,
+          "report_bytes": 1048576
+        },
+        "usage": {
+          "after.ast_items": 6,
+          "after.input_bytes": 6,
+          "after.nfa_edges": 9,
+          "after.nfa_states": 8,
+          "after.peak_cache_entries": 757,
+          "after.rules": 1,
+          "after.subsets": 8,
+          "before.ast_items": 6,
+          "before.input_bytes": 7,
+          "before.nfa_edges": 9,
+          "before.nfa_states": 8,
+          "before.peak_cache_entries": 757,
+          "before.rules": 1,
+          "before.subsets": 8,
+          "peak_input_bytes": 7,
+          "peak_line_bytes": 6,
+          "peak_payload_bytes": 11643944,
+          "product_states": 37,
+          "transitions": 3515,
+          "work": 8026,
+          "replay.peak_payload_bytes": 669,
+          "replay.peak_witness_bytes": 5,
+          "replay.replay_work": 55
+        },
+        "stop": {
+          "reason": "exhausted",
+          "limit": null
+        },
+        "diagnostics": {
+          "items": [],
+          "truncated": false
+        }
+      }
+    },
+    {
+      "command": [
+        "globdelta",
+        "diff",
+        "examples/cache/before.gitignore",
+        "examples/cache/after.gitignore",
+        "--limit",
+        "transitions=0",
+        "--format",
+        "json"
+      ],
+      "exit_code": 4,
+      "report": {
+        "schema_version": 1,
+        "tool": {
+          "name": "GlobDelta",
+          "version": "0.1.0"
+        },
+        "profile": {
+          "id": "git-root-ascii-v1",
+          "semantics_revision": 1
+        },
+        "command": "diff",
+        "inputs": [
+          {
+            "role": "before",
+            "label": "examples/cache/before.gitignore",
+            "raw_bytes_read": 6,
+            "complete_read": true,
+            "sha256": "30ae8992e30d51db6ae07a86d91703976f6e69880457a946a3c1e63ffeaaf83e",
+            "rule_count": 1
+          },
+          {
+            "role": "after",
+            "label": "examples/cache/after.gitignore",
+            "raw_bytes_read": 9,
+            "complete_read": true,
+            "sha256": "5eb260dc1ef473498755843cd8ff2a353eef615ec7afd3d71f870d26def3cc5a",
+            "rule_count": 1
+          }
+        ],
+        "result": "inconclusive",
+        "assessment_complete": false,
+        "graph_exhausted": false,
+        "directions": {
+          "newly_ignored": {
+            "status": "unknown"
+          },
+          "newly_included": {
+            "status": "unknown"
+          }
+        },
+        "limits": {
+          "input_bytes": 65536,
+          "line_bytes": 2048,
+          "rules": 256,
+          "ast_items": 4096,
+          "nfa_states": 8192,
+          "nfa_edges": 24576,
+          "subsets": 50000,
+          "product_states": 50000,
+          "transitions": 0,
+          "work": 20000000,
+          "reference_work": 20000000,
+          "replay_work": 20000000,
+          "replay_payload_bytes": 8388608,
+          "cache_entries": 8192,
+          "payload_bytes": 67108864,
+          "witness_bytes": 4096,
+          "explanation_steps": 4096,
+          "explanation_matches": 16384,
+          "diagnostics": 64,
+          "report_bytes": 1048576
+        },
+        "usage": {
+          "after.ast_items": 7,
+          "after.input_bytes": 9,
+          "after.nfa_edges": 9,
+          "after.nfa_states": 8,
+          "after.rules": 1,
+          "after.subsets": 1,
+          "before.ast_items": 6,
+          "before.input_bytes": 6,
+          "before.nfa_edges": 9,
+          "before.nfa_states": 8,
+          "before.rules": 1,
+          "before.subsets": 1,
+          "peak_input_bytes": 9,
+          "peak_line_bytes": 8,
+          "peak_payload_bytes": 11538390,
+          "product_states": 1,
+          "work": 40,
+          "replay.peak_payload_bytes": 0
+        },
+        "stop": {
+          "reason": "limit",
+          "limit": {
+            "name": "transitions",
+            "phase": "search",
+            "used": 0,
+            "requested_increment": 1,
+            "maximum": 0
+          }
+        },
+        "diagnostics": {
+          "items": [],
+          "truncated": false
+        }
+      }
+    }
+  ]
+}

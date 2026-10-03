@@ -1,0 +1,1399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:globdelta:report:1",
+  "title": "GlobDelta report schema version 1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "tool": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "GlobDelta"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "git-root-ascii-v1"
+        },
+        "semantics_revision": {
+          "const": 1
+        }
+      },
+      "required": [
+        "id",
+        "semantics_revision"
+      ],
+      "additionalProperties": false
+    },
+    "command": {
+      "enum": [
+        "diff",
+        "explain"
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/input"
+      },
+      "minItems": 1,
+      "maxItems": 2
+    },
+    "result": {
+      "enum": [
+        "equivalent",
+        "different",
+        "inconclusive",
+        "explained",
+        "unsupported",
+        "error"
+      ]
+    },
+    "assessment_complete": {
+      "type": "boolean"
+    },
+    "graph_exhausted": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "directions": {
+      "type": "object",
+      "properties": {
+        "newly_ignored": {
+          "$ref": "#/$defs/direction"
+        },
+        "newly_included": {
+          "$ref": "#/$defs/direction"
+        }
+      },
+      "required": [
+        "newly_ignored",
+        "newly_included"
+      ],
+      "additionalProperties": false
+    },
+    "explanation": {
+      "$ref": "#/$defs/explanation"
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "stop": {
+      "$ref": "#/$defs/stop"
+    },
+    "diagnostics": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          }
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "items",
+        "truncated"
+      ],
+      "additionalProperties": false
+    },
+    "query": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "byte_length": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "path",
+        "byte_length"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "tool",
+    "profile",
+    "command",
+    "inputs",
+    "result",
+    "assessment_complete",
+    "graph_exhausted",
+    "limits",
+    "usage",
+    "stop",
+    "diagnostics"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "properties": {
+        "rule_index": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column_end_exclusive": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "byte_start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "byte_end": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_text": {
+          "type": "string"
+        },
+        "polarity": {
+          "enum": [
+            "ignore",
+            "include"
+          ]
+        },
+        "applicability": {
+          "enum": [
+            "file_and_directory",
+            "directory"
+          ]
+        }
+      },
+      "required": [
+        "rule_index",
+        "line",
+        "column_start",
+        "column_end_exclusive",
+        "byte_start",
+        "byte_end",
+        "source_text",
+        "polarity",
+        "applicability"
+      ],
+      "additionalProperties": false
+    },
+    "step": {
+      "type": "object",
+      "properties": {
+        "prefix_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "node_type": {
+          "enum": [
+            "directory",
+            "file"
+          ]
+        },
+        "matching_rule_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "uniqueItems": true
+        },
+        "winning_rule_id": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ignored": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "prefix_end",
+        "node_type",
+        "matching_rule_ids",
+        "winning_rule_id",
+        "ignored"
+      ],
+      "additionalProperties": false
+    },
+    "explanation": {
+      "type": "object",
+      "properties": {
+        "ignored": {
+          "type": "boolean"
+        },
+        "basis": {
+          "enum": [
+            "default",
+            "direct_rule",
+            "blocked_ancestor"
+          ]
+        },
+        "winning_rule_id": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "first_blocked_ancestor": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "prefix_end": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "winning_rule_id": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "prefix_end",
+                "winning_rule_id"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rule_table": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rule"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/step"
+          }
+        },
+        "trace_complete": {
+          "type": "boolean"
+        },
+        "terminal_matches": {
+          "type": "object",
+          "properties": {
+            "effective": {
+              "type": "boolean"
+            },
+            "matching_rule_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "effective",
+            "matching_rule_ids"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ignored",
+        "basis",
+        "winning_rule_id",
+        "first_blocked_ancestor",
+        "rule_table",
+        "steps",
+        "trace_complete",
+        "terminal_matches"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "basis": {
+                "const": "blocked_ancestor"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ignored": {
+                "const": true
+              },
+              "first_blocked_ancestor": {
+                "type": "object"
+              },
+              "winning_rule_id": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "basis": {
+                "const": "default"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "winning_rule_id": {
+                "type": "null"
+              },
+              "first_blocked_ancestor": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "witness": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^[ -~]+$"
+        },
+        "byte_length": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimality": {
+          "const": "shortest-shortlex"
+        },
+        "before": {
+          "$ref": "#/$defs/explanation"
+        },
+        "after": {
+          "$ref": "#/$defs/explanation"
+        }
+      },
+      "required": [
+        "path",
+        "byte_length",
+        "minimality",
+        "before",
+        "after"
+      ],
+      "additionalProperties": false
+    },
+    "direction": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "found"
+            },
+            "witness": {
+              "$ref": "#/$defs/witness"
+            }
+          },
+          "required": [
+            "status",
+            "witness"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "absent",
+                "unknown"
+              ]
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "enum": [
+            "before",
+            "after",
+            "policy"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "raw_bytes_read": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "complete_read": {
+          "type": "boolean"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rule_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "role",
+        "label",
+        "raw_bytes_read",
+        "complete_read",
+        "sha256",
+        "rule_count"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "complete_read": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sha256": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "diagnostic": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "enum": [
+                    "before",
+                    "after",
+                    "policy",
+                    "path",
+                    "command"
+                  ]
+                },
+                "line": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "column_start": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "column_end_exclusive": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "byte_start": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "byte_end": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "role",
+                "line",
+                "column_start",
+                "column_end_exclusive",
+                "byte_start",
+                "byte_end"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "location"
+      ],
+      "additionalProperties": false
+    },
+    "stop": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "enum": [
+            "exhausted",
+            "both_witnesses_found",
+            "explained",
+            "limit",
+            "unsupported",
+            "error"
+          ]
+        },
+        "limit": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "phase": {
+                  "type": "string"
+                },
+                "used": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "requested_increment": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "maximum": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "name",
+                "phase",
+                "used",
+                "requested_increment",
+                "maximum"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "reason",
+        "limit"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "diff"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "directions"
+        ],
+        "not": {
+          "required": [
+            "explanation"
+          ]
+        },
+        "properties": {
+          "inputs": {
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "graph_exhausted": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "explain"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "directions"
+          ]
+        },
+        "properties": {
+          "inputs": {
+            "minItems": 1,
+            "maxItems": 1
+          },
+          "graph_exhausted": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "equivalent"
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "properties": {
+              "directions": {
+                "properties": {
+                  "newly_ignored": {
+                    "properties": {
+                      "status": {
+                        "const": "absent"
+                      }
+                    }
+                  },
+                  "newly_included": {
+                    "properties": {
+                      "status": {
+                        "const": "absent"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "properties": {
+          "command": {
+            "const": "diff"
+          },
+          "assessment_complete": {
+            "const": true
+          },
+          "graph_exhausted": {
+            "const": true
+          },
+          "stop": {
+            "properties": {
+              "reason": {
+                "const": "exhausted"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "different"
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "directions": {
+                    "properties": {
+                      "newly_ignored": {
+                        "properties": {
+                          "status": {
+                            "const": "found"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "directions": {
+                    "properties": {
+                      "newly_included": {
+                        "properties": {
+                          "status": {
+                            "const": "found"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "command": {
+            "const": "diff"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "explained"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "explanation"
+        ],
+        "properties": {
+          "command": {
+            "const": "explain"
+          },
+          "assessment_complete": {
+            "const": true
+          },
+          "stop": {
+            "properties": {
+              "reason": {
+                "const": "explained"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "enum": [
+              "unsupported",
+              "error",
+              "inconclusive"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "assessment_complete": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "diff"
+          },
+          "assessment_complete": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            {
+              "properties": {
+                "directions": {
+                  "properties": {
+                    "newly_ignored": {
+                      "properties": {
+                        "status": {
+                          "const": "unknown"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "properties": {
+                "directions": {
+                  "properties": {
+                    "newly_included": {
+                      "properties": {
+                        "status": {
+                          "const": "unknown"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "diff"
+          },
+          "graph_exhausted": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            {
+              "properties": {
+                "directions": {
+                  "properties": {
+                    "newly_ignored": {
+                      "properties": {
+                        "status": {
+                          "const": "unknown"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "properties": {
+                "directions": {
+                  "properties": {
+                    "newly_included": {
+                      "properties": {
+                        "status": {
+                          "const": "unknown"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "properties": {
+          "assessment_complete": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "diff"
+          },
+          "result": {
+            "const": "inconclusive"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "directions": {
+            "properties": {
+              "newly_ignored": {
+                "properties": {
+                  "status": {
+                    "const": "unknown"
+                  }
+                }
+              },
+              "newly_included": {
+                "properties": {
+                  "status": {
+                    "const": "unknown"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stop": {
+            "properties": {
+              "reason": {
+                "const": "limit"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "graph_exhausted": {
+            "enum": [
+              false,
+              null
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "explain"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "query"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "diff"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "query"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "allOf": [
+          {
+            "properties": {
+              "command": {
+                "const": "diff"
+              }
+            }
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "directions": {
+                    "properties": {
+                      "newly_ignored": {
+                        "properties": {
+                          "status": {
+                            "const": "absent"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "directions": {
+                    "properties": {
+                      "newly_included": {
+                        "properties": {
+                          "status": {
+                            "const": "absent"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "graph_exhausted": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "diff"
+          },
+          "assessment_complete": {
+            "const": false
+          },
+          "result": {
+            "enum": [
+              "different",
+              "inconclusive"
+            ]
+          }
+        }
+      },
+      "then": {
+        "anyOf": [
+          {
+            "properties": {
+              "directions": {
+                "properties": {
+                  "newly_ignored": {
+                    "properties": {
+                      "status": {
+                        "const": "unknown"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "directions": {
+                "properties": {
+                  "newly_included": {
+                    "properties": {
+                      "status": {
+                        "const": "unknown"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "enum": [
+              "unsupported",
+              "error"
+            ]
+          },
+          "command": {
+            "const": "diff"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "directions": {
+            "properties": {
+              "newly_ignored": {
+                "properties": {
+                  "status": {
+                    "const": "unknown"
+                  }
+                }
+              },
+              "newly_included": {
+                "properties": {
+                  "status": {
+                    "const": "unknown"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stop": {
+            "properties": {
+              "reason": {
+                "const": "limit"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "enum": [
+              "different",
+              "inconclusive"
+            ]
+          },
+          "assessment_complete": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stop": {
+            "properties": {
+              "reason": {
+                "const": "exhausted"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "graph_exhausted": {
+            "const": true
+          },
+          "command": {
+            "const": "diff"
+          },
+          "result": {
+            "enum": [
+              "equivalent",
+              "different"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "diff"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "directions": {
+            "properties": {
+              "newly_ignored": {
+                "if": {
+                  "properties": {
+                    "status": {
+                      "const": "found"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "witness": {
+                      "properties": {
+                        "before": {
+                          "properties": {
+                            "ignored": {
+                              "const": false
+                            }
+                          }
+                        },
+                        "after": {
+                          "properties": {
+                            "ignored": {
+                              "const": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "command": {
+            "const": "diff"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "directions": {
+            "properties": {
+              "newly_included": {
+                "if": {
+                  "properties": {
+                    "status": {
+                      "const": "found"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "witness": {
+                      "properties": {
+                        "before": {
+                          "properties": {
+                            "ignored": {
+                              "const": true
+                            }
+                          }
+                        },
+                        "after": {
+                          "properties": {
+                            "ignored": {
+                              "const": false
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
